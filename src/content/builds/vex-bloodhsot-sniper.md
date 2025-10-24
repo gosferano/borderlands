@@ -12,7 +12,7 @@ blueTree: 0
 requiredDLCs: []
 creator: 'Moxsy'
 reviewer: 'gosferano'
-mobbingRating: 4
+mobbingRating: 3
 bossingRating: 4
 uvhFallof: 5
 tags: ['vex', 'sniper', 'bloodshot', 'incarnate', 'undead eye', 'endgame']
