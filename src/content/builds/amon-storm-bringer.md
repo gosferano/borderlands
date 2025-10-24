@@ -16,7 +16,7 @@ reviewer: 'gosferano'
 mobbingRating: 4
 bossingRating: 3
 uvhFallof: 5
-tags: ['amon', 'ordnance', 'shatterwight', 'tanky', 'scourge', 'endgame', 'leveling']
+tags: ['amon', 'ordnance', 'tanky', 'scourge', 'endgame', 'leveling']
 heroImage: '../../assets/build-hero-image-placeholder.jpg'
 ---
 
