@@ -11,7 +11,7 @@ const pageEntries = Object.keys(pages)
   .filter((file) => !file.endsWith('index.astro'))
   .map((file) => {
     const name = path.basename(file, '.astro');
-    const url = `/data/${name}`;
+    const url = `/borderlands/data/${name}`;
     // Make title pretty: capitalize and replace dashes
     const title = name.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
     return { title, url };

@@ -34,7 +34,7 @@ const sortedTags = Object.entries(tagCounts).sort((a, b) => b[1] - a[1]);
       Welcome to Borderlands 4 Builds
     </h1>
     <p class="mb-12 text-center text-gray-700 dark:text-gray-300">
-      Explore builds by tag, view <a href="builds">all builds</a> or check <a href="data"
+      Explore builds by tag, view <a href="/borderlands/builds">all builds</a> or check <a href="/borderlands/data"
         >data pages</a
       >
     </p>
@@ -43,7 +43,7 @@ const sortedTags = Object.entries(tagCounts).sort((a, b) => b[1] - a[1]);
       {
         sortedTags.map(([tag, count], index) => (
           <a
-            href={`builds/tagged/${encodeURIComponent(tag)}/`}
+            href={`/borderlands/builds/tagged/${encodeURIComponent(tag)}/`}
             class="tag-cloud-item text-blue-600 hover:underline dark:text-blue-400"
             style={`font-size:${getFontSize(count)}; --i:${index}; --count:${count};`}
           >

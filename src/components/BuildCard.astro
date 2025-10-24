@@ -8,7 +8,7 @@ interface Props {
 const { build } = Astro.props;
 
 const data = build.data;
-const url = `/builds/${build.id}/`;
+const url = `/borderlands/builds/${build.id}/`;
 
 const renderStars = (count: number, max = 4) => Array.from({ length: max }, (_, i) => i < count);
 ---

@@ -2,16 +2,18 @@
 import { SITE_TITLE } from '../consts';
 import HeaderLink from './HeaderLink.astro';
 import SocialLinks from './SocialLinks.astro';
+
+console.log('Astro.base =', Astro.base);
 ---
 
 <header class="site-header">
   <nav>
-    <h2><a href="/">{SITE_TITLE}</a></h2>
+    <h2><a href="/borderlands/">{SITE_TITLE}</a></h2>
     <div class="internal-links">
-      <HeaderLink href="/">Home</HeaderLink>
-      <HeaderLink href="/builds">Builds</HeaderLink>
-      <HeaderLink href="/data">Data</HeaderLink>
-      <HeaderLink href="/about">About</HeaderLink>
+      <HeaderLink href="/borderlands/">Home</HeaderLink>
+      <HeaderLink href="/borderlands/builds">Builds</HeaderLink>
+      <HeaderLink href="/borderlands/data">Data</HeaderLink>
+      <HeaderLink href="/borderlands/about">About</HeaderLink>
     </div>
     <SocialLinks responsiveHide={true} />
   </nav>
