@@ -9,7 +9,7 @@ import tailwindcss from '@tailwindcss/vite';
 // https://astro.build/config
 export default defineConfig({
   site: 'https://gosferano.github.io/borderlands/',
-  base: '/borderlands/',
+  base: '/borderlands',
   integrations: [mdx(), sitemap()],
 
   vite: {
