@@ -1,0 +1,65 @@
+---
+import fs from 'fs';
+import Papa from 'papaparse';
+
+interface Props {
+  /** Path to the CSV file (relative to project root or /src) */
+  src: string;
+  /** Optional: Custom table title */
+  title?: string;
+}
+
+const { src, title } = Astro.props;
+
+// Read CSV file at build time
+let csvData: string;
+try {
+  csvData = fs.readFileSync(src, 'utf-8');
+} catch (err) {
+  console.error(`[CsvTable] Failed to load file: ${src}`);
+  csvData = '';
+}
+
+// Parse the CSV data using PapaParse
+const { data } = Papa.parse(csvData, {
+  header: true,
+  skipEmptyLines: true,
+});
+---
+
+<section class="my-8">
+  {title && <h2 class="mb-4 text-2xl font-semibold text-gray-900 dark:text-gray-100">{title}</h2>}
+
+  {
+    data.length > 0 ? (
+      <div class="overflow-x-auto rounded-2xl shadow-md">
+        <table class="min-w-full border border-gray-300 text-sm dark:border-gray-700">
+          <thead class="bg-gray-100 dark:bg-gray-800">
+            <tr>
+              {Object.keys(data[0]!).map((header) => (
+                <th class="border-b border-gray-300 px-4 py-2 text-left font-semibold text-gray-700 dark:border-gray-700 dark:text-gray-200">
+                  {header}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody class="bg-white dark:bg-gray-900">
+            {data.map((row, i) => (
+              <tr
+                class={`transition-colors hover:bg-gray-50 dark:hover:bg-gray-800 ${i % 2 === 0 ? 'bg-gray-50 dark:bg-gray-900' : 'bg-white dark:bg-gray-950'}`}
+              >
+                {Object.values(row!).map((cell) => (
+                  <td class="border-b border-gray-200 px-4 py-2 text-gray-800 dark:border-gray-700 dark:text-gray-100">
+                    {cell}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    ) : (
+      <p class="text-gray-600 dark:text-gray-400">No data found or failed to load CSV file.</p>
+    )
+  }
+</section>

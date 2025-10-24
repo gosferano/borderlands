@@ -1,0 +1,29 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+
+// Props can override defaults
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const { title = SITE_TITLE, description = SITE_DESCRIPTION } = Astro.props;
+---
+
+<html lang="en" class="scroll-smooth">
+  <head>
+    <BaseHead {title} {description} />
+  </head>
+  <body
+    class="bg-white text-gray-900 transition-colors duration-300 dark:bg-gray-900 dark:text-gray-100"
+  >
+    <Header />
+    <main class="mx-auto max-w-6xl p-4 md:p-8">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

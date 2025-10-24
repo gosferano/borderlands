@@ -1,19 +1,30 @@
 import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
 
-const blog = defineCollection({
-	// Load Markdown and MDX files in the `src/content/blog/` directory.
-	loader: glob({ base: './src/content/blog', pattern: '**/*.{md,mdx}' }),
-	// Type-check frontmatter using a schema
-	schema: ({ image }) =>
-		z.object({
-			title: z.string(),
-			description: z.string(),
-			// Transform string to Date object
-			pubDate: z.coerce.date(),
-			updatedDate: z.coerce.date().optional(),
-			heroImage: image().optional(),
-		}),
+const builds = defineCollection({
+  loader: glob({ base: './src/content/builds', pattern: '**/*.{md,mdx}' }),
+  schema: ({ image }) =>
+    z.object({
+      title: z.string(),
+      character: z.string(),
+      excerpt: z.string().optional(),
+      actionSkill: z.string(),
+      videoLink: z.string().url().optional(),
+      buildLink: z.string().url().optional(),
+      pubDate: z.coerce.date(),
+      updatedDate: z.coerce.date(),
+      redTree: z.number(),
+      greenTree: z.number(),
+      blueTree: z.number(),
+      requiredDLCs: z.array(z.string()).optional(),
+      creator: z.string(),
+      reviewer: z.string(),
+      mobbingRating: z.number().min(0).max(4),
+      bossingRating: z.number().min(0).max(4),
+      uvhFallof: z.number().min(0).max(5),
+      tags: z.array(z.string()).optional(),
+      heroImage: image().optional(),
+    }),
 });
 
-export const collections = { blog };
+export const collections = { builds };

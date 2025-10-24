@@ -1,0 +1,80 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  build: CollectionEntry<'builds'>;
+}
+
+const { build } = Astro.props;
+
+const data = build.data;
+const url = `/builds/${build.id}/`;
+
+const renderStars = (count: number, max = 4) => Array.from({ length: max }, (_, i) => i < count);
+---
+
+<a
+  href={url}
+  class="block overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm transition hover:shadow-md dark:border-gray-700 dark:bg-gray-800"
+>
+  {
+    data.heroImage && (
+      <img
+        src={data.heroImage.src ?? data.heroImage}
+        alt={data.title}
+        class="h-48 w-full object-cover"
+      />
+    )
+  }
+
+  <div class="space-y-3 p-4">
+    <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-100">{data.title}</h2>
+
+    <div class="flex justify-between text-sm text-gray-600 dark:text-gray-400">
+      <span><strong>Published:</strong> {new Date(data.pubDate).toLocaleDateString()}</span>
+      <span><strong>Updated:</strong> {new Date(data.updatedDate).toLocaleDateString()}</span>
+    </div>
+
+    <div class="mt-2 flex flex-col gap-1">
+      <div class="flex items-center justify-between">
+        <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Mobbing:</span>
+        <div class="flex space-x-1">
+          {
+            renderStars(data.mobbingRating).map((filled, i) => (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill={filled ? 'gold' : 'none'}
+                stroke="gold"
+                stroke-width="2"
+                class="h-4 w-4"
+              >
+                <path d="M12 2.5l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2.5z" />
+              </svg>
+            ))
+          }
+        </div>
+      </div>
+
+      <div class="flex items-center justify-between">
+        <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Bossing:</span>
+        <div class="flex space-x-1">
+          {
+            renderStars(data.bossingRating).map((filled, i) => (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill={filled ? 'gold' : 'none'}
+                stroke="gold"
+                stroke-width="2"
+                class="h-4 w-4"
+              >
+                <path d="M12 2.5l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2.5z" />
+              </svg>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</a>

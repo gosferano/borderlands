@@ -1,49 +1,93 @@
 ---
-import BaseHead from '../components/BaseHead.astro';
-import Footer from '../components/Footer.astro';
-import Header from '../components/Header.astro';
-import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+// Load builds and collect tag counts
+const builds = await getCollection('builds');
+
+const tagCounts = builds
+  .flatMap((b) => b.data.tags || [])
+  .reduce<Record<string, number>>((acc, tag) => {
+    acc[tag] = (acc[tag] ?? 0) + 1;
+    return acc;
+  }, {});
+
+const counts = Object.values(tagCounts);
+const minCount = counts.length > 0 ? Math.min(...counts) : 0;
+const maxCount = counts.length > 0 ? Math.max(...counts) : 1;
+
+// Scale font size based on popularity
+function getFontSize(count: number): string {
+  if (maxCount === minCount) return '1rem';
+  const scale = (count - minCount) / (maxCount - minCount);
+  const size = 0.9 + scale * 1.6; // 0.9rem → 2.5rem
+  return `${size.toFixed(2)}rem`;
+}
+
+// Sort so big ones appear first (middle)
+const sortedTags = Object.entries(tagCounts).sort((a, b) => b[1] - a[1]);
 ---
 
-<!doctype html>
-<html lang="en">
-	<head>
-		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-	</head>
-	<body>
-		<Header />
-		<main>
-			<h1>🧑‍🚀 Hello, Astronaut!</h1>
-			<p>
-				Welcome to the official <a href="https://astro.build/">Astro</a> blog starter template. This
-				template serves as a lightweight, minimally-styled starting point for anyone looking to build
-				a personal website, blog, or portfolio with Astro.
-			</p>
-			<p>
-				This template comes with a few integrations already configured in your
-				<code>astro.config.mjs</code> file. You can customize your setup with
-				<a href="https://astro.build/integrations">Astro Integrations</a> to add tools like Tailwind,
-				React, or Vue to your project.
-			</p>
-			<p>Here are a few ideas on how to get started with the template:</p>
-			<ul>
-				<li>Edit this page in <code>src/pages/index.astro</code></li>
-				<li>Edit the site header items in <code>src/components/Header.astro</code></li>
-				<li>Add your name to the footer in <code>src/components/Footer.astro</code></li>
-				<li>Check out the included blog posts in <code>src/content/blog/</code></li>
-				<li>Customize the blog post page layout in <code>src/layouts/BlogPost.astro</code></li>
-			</ul>
-			<p>
-				Have fun! If you get stuck, remember to
-				<a href="https://docs.astro.build/">read the docs</a>
-				or <a href="https://astro.build/chat">join us on Discord</a> to ask questions.
-			</p>
-			<p>
-				Looking for a blog template with a bit more personality? Check out
-				<a href="https://github.com/Charca/astro-blog-template">astro-blog-template</a>
-				by <a href="https://twitter.com/Charca">Maxi Ferreira</a>.
-			</p>
-		</main>
-		<Footer />
-	</body>
-</html>
+<BaseLayout title="Home">
+  <section class="mx-auto max-w-5xl px-6 py-10">
+    <h1 class="mb-6 text-center text-4xl font-bold text-gray-900">
+      Welcome to Borderlands 4 Builds
+    </h1>
+    <p class="mb-12 text-center text-gray-700 dark:text-gray-300">
+      Explore builds by tag, view <a href="builds">all builds</a> or check <a href="data"
+        >data pages</a
+      >
+    </p>
+
+    <div class="tag-cloud relative mx-auto flex max-w-3xl flex-wrap justify-center gap-4">
+      {
+        sortedTags.map(([tag, count], index) => (
+          <a
+            href={`builds/tagged/${encodeURIComponent(tag)}/`}
+            class="tag-cloud-item text-blue-600 hover:underline dark:text-blue-400"
+            style={`font-size:${getFontSize(count)}; --i:${index}; --count:${count};`}
+          >
+            {tag}
+          </a>
+        ))
+      }
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .tag-cloud {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    max-width: 48rem;
+    margin: 0 auto;
+    position: relative;
+    gap: 0.75rem 1.25rem;
+  }
+
+  .tag-cloud-item {
+    display: inline-block;
+    padding: 0.25em 0.5em;
+    transition:
+      transform 0.2s,
+      color 0.2s;
+    text-decoration: none;
+    line-height: 1;
+  }
+
+  .tag-cloud-item:hover {
+    transform: scale(1.25);
+    z-index: 10;
+  }
+
+  /* Simulate cloud shape by pushing items outward with rotate+translate */
+  .tag-cloud-item:nth-child(odd) {
+    transform: translateY(calc((var(--i) % 6 - 3) * 2px)) rotate(calc(var(--i) * 10deg));
+  }
+
+  .tag-cloud-item:nth-child(even) {
+    transform: translateY(calc((var(--i) % 6 - 3) * -2px)) rotate(calc(var(--i) * -10deg));
+  }
+</style>

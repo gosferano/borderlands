@@ -1,0 +1,36 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { fileURLToPath } from 'url';
+import path from 'path';
+
+// Glob all .astro pages in the /data folder (excluding index.astro itself)
+const pages = import.meta.glob('./*.astro', { eager: true });
+
+// Filter out this index page
+const pageEntries = Object.keys(pages)
+  .filter((file) => !file.endsWith('index.astro'))
+  .map((file) => {
+    const name = path.basename(file, '.astro');
+    const url = `/data/${name}`;
+    // Make title pretty: capitalize and replace dashes
+    const title = name.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
+    return { title, url };
+  });
+---
+
+<BaseLayout title="Data Pages">
+  <section class="mx-auto max-w-5xl px-6 py-10 text-center">
+    <h1 class="mb-6 text-4xl font-bold">Data Pages</h1>
+    <span class="space-y-2">
+      {
+        pageEntries.map((page) => (
+          <span>
+            <a href={page.url} class="text-blue-600 hover:underline dark:text-blue-400">
+              {page.title}
+            </a>
+          </span>
+        ))
+      }
+    </span>
+  </section>
+</BaseLayout>

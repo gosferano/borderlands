@@ -1,0 +1,98 @@
+---
+import fs from 'fs';
+import path from 'path';
+import Papa from 'papaparse';
+
+interface SpecializationTableProps {
+  specialization: string; // "survivor", "gadgeteer", etc.
+  maxLevel?: number; // optional, default 21
+}
+
+const { specialization, maxLevel = 21 } = Astro.props as SpecializationTableProps;
+
+// Read CSV content
+const csvFilePath = path.resolve(`./src/data/${specialization}-specialization-scaling.csv`);
+const csvContent = fs.readFileSync(csvFilePath, 'utf-8');
+
+// Parse CSV
+const parsed = Papa.parse<Row>(csvContent, {
+  header: true, // Important: tells PapaParse to use headers
+  skipEmptyLines: true,
+});
+if (parsed.errors.length > 0) {
+  console.error(parsed.errors);
+}
+
+interface Row {
+  Level: string;
+  [statName: string]: string; // any additional stat columns
+}
+
+const rows: Row[] = parsed.data as Row[];
+
+// Compute cumulative values for each stat
+// Get all stat keys dynamically (exclude 'Specialization' and 'Level')
+const statKeys = Object.keys(rows[0] || {}).filter((k) => k !== 'Specialization' && k !== 'Level');
+
+interface TableRow {
+  level: number;
+  stats: Record<string, { perLevel: number; cumulative: number }>;
+}
+
+const tableRows: TableRow[] = [];
+const cumulative: Record<string, number> = {};
+statKeys.forEach((k) => (cumulative[k] = 0));
+
+for (const row of rows) {
+  const level = parseInt(row.Level || '0', 10);
+  if (level > maxLevel) break;
+
+  const stats: Record<string, { perLevel: number; cumulative: number }> = {};
+  statKeys.forEach((k) => {
+    const val = parseFloat(row[k] || '0');
+    cumulative[k] += val;
+    stats[k] = { perLevel: val, cumulative: cumulative[k] };
+  });
+
+  tableRows.push({ level, stats });
+}
+---
+
+<table class="w-full border border-gray-300 text-sm dark:border-gray-600">
+  <thead class="bg-gray-100 dark:bg-gray-700">
+    <tr>
+      <th class="border border-gray-300 px-2 py-1 text-left dark:border-gray-600">Level</th>
+      {
+        statKeys.map((k) => (
+          <>
+            <th class="border border-gray-300 px-2 py-1 text-left dark:border-gray-600">
+              {k} / Level
+            </th>
+            <th class="border border-gray-300 px-2 py-1 text-left dark:border-gray-600">
+              {k} / Cumulative
+            </th>
+          </>
+        ))
+      }
+    </tr>
+  </thead>
+  <tbody>
+    {
+      tableRows.map((row) => (
+        <tr>
+          <td class="border border-gray-300 px-2 py-1 dark:border-gray-600">{row.level}</td>
+          {statKeys.map((k) => (
+            <>
+              <td class="border border-gray-300 px-2 py-1 dark:border-gray-600">
+                {row.stats[k].perLevel.toFixed(2)}%
+              </td>
+              <td class="border border-gray-300 px-2 py-1 dark:border-gray-600">
+                {row.stats[k].cumulative.toFixed(2)}%
+              </td>
+            </>
+          ))}
+        </tr>
+      ))
+    }
+  </tbody>
+</table>

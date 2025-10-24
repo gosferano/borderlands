@@ -1,0 +1,42 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SpecializationScalingTable from '../../components/SpecializationScalingTable.astro';
+
+const specializations = [
+  'survivor',
+  'gadgeteer',
+  'brute',
+  'killer',
+  'sharpshooter',
+  'daredevil',
+  'runner',
+];
+---
+
+<BaseLayout title="Specialization Scaling">
+  <section class="mx-auto max-w-5xl px-6 py-10 text-center">
+    <h1 class="mb-6 text-4xl font-bold">Specialization Level Scaling</h1>
+    <p class="mb-12">Note that cumulative values are approximate because of rounding.</p>
+
+    <div class="space-y-4 text-left">
+      {
+        specializations.map((spec) => (
+          <div class="mb-6 overflow-hidden rounded-lg border">
+            <input type="checkbox" id={spec} class="peer hidden" />
+            <label
+              for={spec}
+              class="block cursor-pointer bg-gray-200 p-4 font-semibold hover:bg-gray-300 dark:bg-gray-800 dark:hover:bg-gray-700"
+            >
+              {spec.charAt(0).toUpperCase() + spec.slice(1)}
+            </label>
+            <div class="max-h-0 overflow-hidden transition-all duration-300 peer-checked:max-h-[2000px]">
+              <div class="bg-white p-4 dark:bg-gray-900">
+                <SpecializationScalingTable specialization={spec} maxLevel={21} />
+              </div>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+</BaseLayout>
