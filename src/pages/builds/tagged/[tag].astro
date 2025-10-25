@@ -6,16 +6,17 @@ import BuildCard from '../../../components/BuildCard.astro';
 export async function getStaticPaths() {
   const builds = await getCollection('builds');
 
-  // Collect all unique tags
-  const allTags = Array.from(
+  // Collect all unique tags from existing builds
+  const existingTags = Array.from(
     new Set(builds.flatMap((b) => (b.data.tags || []).map((t) => t.trim().toLowerCase())))
   );
 
-  console.log('All tags for static paths:', allTags); // Debug: terminal log
+  // Add extra tags you want to pre-generate even if no builds use them yet
+  const extraTags = ['leveling', 'endgame', 'vex', 'amon', 'rafa', 'harlowe'];
 
-  return allTags.map((tag) => ({
-    params: { tag },
-  }));
+  const allTags = Array.from(new Set([...existingTags, ...extraTags]));
+
+  return allTags.map((tag) => ({ params: { tag } }));
 }
 
 // Current tag from the route
@@ -36,16 +37,14 @@ const taggedBuilds = builds.filter(
   <section class="mx-auto max-w-5xl px-6 py-10 text-center">
     <h1 class="mb-6 text-4xl font-bold">Builds tagged: {tag}</h1>
 
-    {
-      taggedBuilds.length > 0 ? (
-        <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
-          {taggedBuilds.map((build) => (
-            <BuildCard build={build} />
-          ))}
-        </div>
-      ) : (
-        <p>No builds found for this tag.</p>
-      )
-    }
+    {taggedBuilds.length > 0 ? (
+      <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+        {taggedBuilds.map((build) => (
+          <BuildCard build={build} />
+        ))}
+      </div>
+    ) : (
+      <p>No builds found for this tag.</p>
+    )}
   </section>
 </BaseLayout>
