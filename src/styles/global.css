@@ -151,7 +151,24 @@ header {
 header nav {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-between; /* logo left, links right by default */
+}
+
+/* On wider screens, center links when socials are visible */
+@media (min-width: 720px) {
+  header nav {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr; /* center the links */
+    align-items: center;
+  }
+
+  header nav > .internal-links {
+    justify-self: center;
+  }
+
+  header nav > .social-links {
+    justify-self: end;
+  }
 }
 
 header a {
