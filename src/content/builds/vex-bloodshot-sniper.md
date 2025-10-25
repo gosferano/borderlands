@@ -1,7 +1,7 @@
 ---
 title: 'Blood Shot Sniper Vex'
 character: 'Vex'
-excerpt: 'Sniper witch!.'
+excerpt: 'Sniper witch!'
 actionSkill: 'Incarnate'
 videoLink: 'https://youtu.be/OqfW_gljvhk'
 pubDate: '2025-09-23'
@@ -16,7 +16,7 @@ mobbingRating: 3
 bossingRating: 4
 uvhFallof: 5
 tags: ['vex', 'sniper', 'bloodshot', 'incarnate', 'undead eye', 'endgame']
-heroImage: '../../assets/build-hero-image-placeholder.jpg'
+heroImage: '../../assets/vex-bloodshot-sniper.png'
 ---
 
 Top tier mobbing and bossing build suitable for all of the endgame content.
