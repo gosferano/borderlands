@@ -1,0 +1,88 @@
+---
+import fs from 'fs';
+import Papa from 'papaparse';
+
+interface Props {
+  csvPath: string;
+  xColumn: string;
+  yColumn: string;
+  chartLabel?: string;
+  cumulative?: boolean;
+}
+
+const { csvPath, xColumn, yColumn, chartLabel = yColumn, cumulative = false } = Astro.props;
+
+type CsvRow = Record<string, string | number>;
+
+// Read CSV at build time
+const csvText = fs.readFileSync(csvPath, 'utf-8');
+
+// Parse CSV safely
+const parsed = Papa.parse(csvText, {
+  header: true,
+  skipEmptyLines: true,
+}) as Papa.ParseResult<CsvRow>;
+
+// Extract x and y values
+const xValues: (string | number)[] = parsed.data
+  .map((row) => row[xColumn])
+  .filter((v): v is string | number => v !== undefined && v !== null);
+
+let yValues: number[] = parsed.data.map((row) => Number(row[yColumn])).filter((v) => !isNaN(v));
+
+// Compute cumulative values if requested
+if (cumulative) {
+  let sum = 0;
+  yValues = yValues.map((v) => (sum += v));
+}
+
+const chartId = `chart-${Math.random().toString(36).substr(2, 9)}`;
+const xValuesJson = JSON.stringify(xValues);
+const yValuesJson = JSON.stringify(yValues);
+---
+
+<div class="my-10">
+  <canvas id={chartId} data-x={xValuesJson} data-y={yValuesJson} data-label={chartLabel}></canvas>
+</div>
+
+<!-- Chart.js CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script define:vars={{ chartId }}>
+  window.addEventListener('load', () => {
+    const canvas = document.getElementById(chartId);
+    if (!canvas) return;
+
+    const xValues = JSON.parse(canvas.dataset.x);
+    const yValues = JSON.parse(canvas.dataset.y);
+    const label = canvas.dataset.label;
+
+    new Chart(canvas.getContext('2d'), {
+      type: 'line',
+      data: {
+        labels: xValues,
+        datasets: [
+          {
+            label,
+            data: yValues,
+            borderColor: 'rgba(75, 192, 192, 1)',
+            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+            fill: true,
+            tension: 0.3,
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        aspectRatio: 1,
+        resizeDelay: 100,
+        plugins: {
+          legend: { display: false },
+          title: { display: false, text: label },
+        },
+        scales: { y: { beginAtZero: true } },
+      },
+    });
+  });
+</script>

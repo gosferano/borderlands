@@ -21,16 +21,16 @@ const pageEntries = Object.keys(pages)
 <BaseLayout title="Data Pages">
   <section class="mx-auto max-w-5xl px-6 py-10 text-center">
     <h1 class="mb-6 text-4xl font-bold">Data Pages</h1>
-    <span class="space-y-2">
+    <div class="space-y-2">
       {
         pageEntries.map((page) => (
-          <span>
+          <div>
             <a href={page.url} class="text-blue-600 hover:underline dark:text-blue-400">
               {page.title}
             </a>
-          </span>
+          </div>
         ))
       }
-    </span>
+    </div>
   </section>
 </BaseLayout>
