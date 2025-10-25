@@ -18,7 +18,7 @@ const build = Astro.props as CollectionEntry<'builds'>;
 const { Content } = await render(build);
 ---
 
-<BaseLayout title={build.data.title}>
+<BaseLayout title={build.data.title} image={build.data.heroImage}>
   <article
     class="mx-auto max-w-4xl overflow-hidden rounded-2xl bg-white shadow-lg transition-colors duration-300 dark:bg-gray-800"
   >
