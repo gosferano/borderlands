@@ -17,7 +17,7 @@ mobbingRating: 4
 bossingRating: 3
 uvhFallof: 5
 tags: ['amon', 'ordnance', 'tanky', 'scourge', 'endgame', 'leveling']
-heroImage: '../../assets/build-hero-image-placeholder.jpg'
+heroImage: '../../assets/amon-storm-bringer.png'
 ---
 
 Top tier mobbing and bossing build suitable for all of the endgame content.

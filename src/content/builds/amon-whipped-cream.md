@@ -16,7 +16,7 @@ mobbingRating: 1
 bossingRating: 3
 uvhFallof: 0
 tags: ['amon', 'ordnance', 'shatterwight', 'tanky', 'scourge', 'endgame']
-heroImage: '../../assets/build-hero-image-placeholder.jpg'
+heroImage: '../../assets/amon-whipped-cream.png'
 ---
 
 Due to being extremely reliant on action skill, supposedly boss build, which does not seem to deliver the best bossing experience. Yet, due to extreme tankyness capable of defeating bosses, even if taking a lot longer than top tier builds.
