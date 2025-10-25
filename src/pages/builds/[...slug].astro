@@ -40,107 +40,100 @@ const { Content } = await render(build);
       <h1 class="text-3xl font-bold text-gray-900 dark:text-gray-100">{build.data.title}</h1>
       <p class="text-lg text-gray-800 dark:text-gray-100">{build.data.excerpt}</p>
 
-      <!-- Grid for properties -->
       <div class="grid grid-cols-12 gap-4">
-        <!-- Character -->
-        <div class="col-span-6 flex flex-col md:col-span-3">
-          <span class="font-semibold text-gray-700 dark:text-gray-300">Character</span>
-          <span class="text-gray-800 dark:text-gray-100">{build.data.character}</span>
-        </div>
-
-        <!-- Action Skill -->
-        <div class="col-span-6 flex flex-col md:col-span-3">
-          <span class="font-semibold text-gray-700 dark:text-gray-300">Action Skill</span>
-          <span class="text-gray-800 dark:text-gray-100">{build.data.actionSkill}</span>
-        </div>
-
-        <!-- Video Link -->
-        <div class="col-span-6 flex flex-col md:col-span-3">
-          <span class="font-semibold text-gray-700 dark:text-gray-300">Video</span>
-          <a
-            href={build.data.videoLink}
-            target="_blank"
-            class="text-blue-600 hover:underline dark:text-blue-400">{build.data.videoLink}</a
-          >
-        </div>
-
-        <!-- Build Link -->
-        <div class="col-span-6 flex flex-col md:col-span-3">
-          <span class="font-semibold text-gray-700 dark:text-gray-300">Build</span>
-          <a
-            href={build.data.buildLink}
-            target="_blank"
-            class="text-blue-600 hover:underline dark:text-blue-400">{build.data.buildLink}</a
-          >
-        </div>
-
-        <!-- Published -->
-        <div class="col-span-6 flex flex-col md:col-span-3">
-          <span class="font-semibold text-gray-700 dark:text-gray-300">Published</span>
-          <span class="text-gray-800 dark:text-gray-100"
-            >{new Date(build.data.pubDate).toLocaleDateString()}</span
-          >
-        </div>
-
-        <!-- Updated -->
-        <div class="col-span-6 flex flex-col md:col-span-3">
-          <span class="font-semibold text-gray-700 dark:text-gray-300">Updated</span>
-          <span class="text-gray-800 dark:text-gray-100"
-            >{new Date(build.data.updatedDate).toLocaleDateString()}</span
-          >
-        </div>
-
-        <!-- Creator -->
-        <div class="col-span-6 flex flex-col md:col-span-3">
-          <span class="font-semibold text-gray-700 dark:text-gray-300">Creator</span>
-          <span class="text-gray-800 dark:text-gray-100">{build.data.creator}</span>
-        </div>
-
-        <!-- Reviewer -->
-        <div class="col-span-6 flex flex-col md:col-span-3">
-          <span class="font-semibold text-gray-700 dark:text-gray-300">Reviewer</span>
-          <span class="text-gray-800 dark:text-gray-100">{build.data.reviewer}</span>
-        </div>
-
-        <!-- Skill Points -->
-        <!-- <div class="col-span-12 mt-2 flex gap-6 md:col-span-12">
-          <div class="flex flex-col items-center">
-            <span class="mb-1 text-sm font-semibold text-red-500">Red</span>
-            <span class="font-mono text-lg">{build.data.redTree}</span>
+        <!-- Row 1: Character above Action Skill -->
+        <div class="col-span-12 flex flex-col gap-2 md:col-span-6">
+          <div class="flex items-center gap-2">
+            <span class="w-28 font-semibold text-gray-700 dark:text-gray-300">Character:</span>
+            <span class="text-gray-800 dark:text-gray-100">{build.data.character}</span>
           </div>
-          <div class="flex flex-col items-center">
-            <span class="mb-1 text-sm font-semibold text-green-500">Green</span>
-            <span class="font-mono text-lg">{build.data.greenTree}</span>
+          <div class="flex items-center gap-2">
+            <span class="w-28 font-semibold text-gray-700 dark:text-gray-300">Action Skill:</span>
+            <span class="text-gray-800 dark:text-gray-100">{build.data.actionSkill}</span>
           </div>
-          <div class="flex flex-col items-center">
-            <span class="mb-1 text-sm font-semibold text-blue-500">Blue</span>
-            <span class="font-mono text-lg">{build.data.blueTree}</span>
+        </div>
+
+        <!-- Row 1: Video above Build -->
+        <div class="col-span-12 flex flex-col gap-2 md:col-span-6">
+          <div class="flex">
+            <span class="w-28 font-semibold text-gray-700 dark:text-gray-300">Video:</span>
+            <div class="flex-1 overflow-hidden text-ellipsis">
+              <a
+                href={build.data.videoLink}
+                target="_blank"
+                class="truncate text-blue-600 hover:underline dark:text-blue-400"
+              >
+                {build.data.videoLink}
+              </a>
+            </div>
           </div>
-        </div> -->
+
+          <div class="flex">
+            <span class="w-28 font-semibold text-gray-700 dark:text-gray-300">Build:</span>
+            <div class="flex-1 overflow-hidden text-ellipsis">
+              <a
+                href={build.data.buildLink}
+                target="_blank"
+                class="truncate text-blue-600 hover:underline dark:text-blue-400"
+              >
+                {build.data.buildLink}
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Row 2: Published above Updated -->
+        <div class="col-span-12 flex flex-col gap-2 md:col-span-6">
+          <div class="flex items-center gap-2">
+            <span class="w-28 font-semibold text-gray-700 dark:text-gray-300">Published:</span>
+            <span class="text-gray-800 dark:text-gray-100"
+              >{new Date(build.data.pubDate).toLocaleDateString()}</span
+            >
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="w-28 font-semibold text-gray-700 dark:text-gray-300">Updated:</span>
+            <span class="text-gray-800 dark:text-gray-100"
+              >{new Date(build.data.updatedDate).toLocaleDateString()}</span
+            >
+          </div>
+        </div>
+
+        <!-- Row 2: Creator above Reviewer -->
+        <div class="col-span-12 flex flex-col gap-2 md:col-span-6">
+          <div class="flex items-center gap-2">
+            <span class="w-28 font-semibold text-gray-700 dark:text-gray-300">Creator:</span>
+            <span class="text-gray-800 dark:text-gray-100">{build.data.creator}</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="w-28 font-semibold text-gray-700 dark:text-gray-300">Reviewer:</span>
+            <span class="text-gray-800 dark:text-gray-100">{build.data.reviewer}</span>
+          </div>
+        </div>
 
         <!-- Ratings: Mobbing, Bossing, UVH -->
-
-        <div class="col-span-12 flex items-center gap-1 md:col-span-4">
-          <span class="font-semibold">Mobbing:</span>
+        <div class="col-span-12 flex items-center gap-2 md:col-span-4">
+          <span class="w-28 font-semibold">Mobbing:</span>
           <StarRating rating={build.data.mobbingRating} size={16} />
         </div>
 
-        <div class="col-span-12 flex items-center gap-1 md:col-span-4">
-          <span class="font-semibold">Bossing:</span>
+        <div class="col-span-12 flex items-center gap-2 md:col-span-4">
+          <span class="w-28 font-semibold">Bossing:</span>
           <StarRating rating={build.data.bossingRating} size={16} />
         </div>
 
-        <div class="col-span-12 flex items-center gap-1 md:col-span-4">
-          <span class="font-semibold">UVH Viability:</span>
+        <div class="col-span-12 flex items-center gap-2 md:col-span-4">
+          <span class="w-28 font-semibold">UVH Viability:</span>
           <UvhIndicator value={build.data.uvhFallof} />
         </div>
 
         <!-- Required DLCs -->
-        <div class="col-span-12 flex w-full min-w-0 flex-col md:col-span-6">
-          <span class="font-semibold text-gray-700 dark:text-gray-300">Required DLCs:</span>
-          <span class="text-gray-800 dark:text-gray-100">
-            {build.data.requiredDLCs?.length ? build.data.requiredDLCs.join(', ') : 'none'}
-          </span>
+        <div class="col-span-12 flex flex-col gap-2 md:col-span-6">
+          <div class="flex items-center gap-2">
+            <span class="w-28 font-semibold text-gray-700 dark:text-gray-300">Required DLCs:</span>
+            <span class="text-gray-800 dark:text-gray-100">
+              {build.data.requiredDLCs?.length ? build.data.requiredDLCs.join(', ') : 'none'}
+            </span>
+          </div>
         </div>
       </div>
 
