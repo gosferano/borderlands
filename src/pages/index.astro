@@ -39,6 +39,25 @@ const sortedTags = Object.entries(tagCounts).sort((a, b) => b[1] - a[1]);
       >
     </p>
 
+    <h2 class="mb-6 text-center text-3xl font-bold text-gray-900">Characters</h2>
+
+    <p class="mb-6 text-center">
+      <a href="/borderlands/builds/tagged/amon">Amon</a> | <a
+        href="/borderlands/builds/tagged/harlowe">Harlowe</a
+      > | <a href="/borderlands/builds/tagged/rafa">Rafa</a> | <a
+        href="/borderlands/builds/tagged/vex">Vex</a
+      >
+    </p>
+
+    <h2 class="mb-6 text-center text-3xl font-bold text-gray-900">Game progress</h2>
+    <p class="mb-6 text-center">
+      <a href="/borderlands/builds/tagged/leveling">Leveling</a> | <a
+        href="/borderlands/builds/tagged/endgame">Endgame</a
+      >
+    </p>
+
+    <h2 class="mb-6 text-center text-3xl font-bold text-gray-900">All tags</h2>
+
     <div class="tag-cloud relative mx-auto flex max-w-3xl flex-wrap justify-center gap-4">
       {
         sortedTags.map(([tag, count], index) => (
