@@ -19,4 +19,4 @@ tags: ['vex', 'sniper', 'bloodshot', 'incarnate', 'undead eye', 'endgame']
 heroImage: '../../assets/vex-bloodshot-sniper.png'
 ---
 
-Top tier mobbing and bossing build suitable for all of the endgame content.
+Top tier mobbing and bossing build suitable for all of the endgame content. Might struggle against Vile enemies if not using something with good splash damage.
