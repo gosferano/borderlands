@@ -1,5 +1,6 @@
 ---
 import type { CollectionEntry } from 'astro:content';
+import StarRating from './StarRating.astro';
 
 interface Props {
   build: CollectionEntry<'builds'>;
@@ -44,40 +45,14 @@ const renderStars = (count: number, max = 4) => Array.from({ length: max }, (_, 
       <div class="flex items-center justify-between">
         <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Mobbing:</span>
         <div class="flex space-x-1">
-          {
-            renderStars(data.mobbingRating).map((filled, i) => (
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill={filled ? 'gold' : 'none'}
-                stroke="gold"
-                stroke-width="2"
-                class="h-4 w-4"
-              >
-                <path d="M12 2.5l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2.5z" />
-              </svg>
-            ))
-          }
+          <StarRating rating={data.mobbingRating} max={4} />
         </div>
       </div>
 
       <div class="flex items-center justify-between">
         <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Bossing:</span>
         <div class="flex space-x-1">
-          {
-            renderStars(data.bossingRating).map((filled, i) => (
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill={filled ? 'gold' : 'none'}
-                stroke="gold"
-                stroke-width="2"
-                class="h-4 w-4"
-              >
-                <path d="M12 2.5l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2.5z" />
-              </svg>
-            ))
-          }
+          <StarRating rating={data.bossingRating} max={4} />
         </div>
       </div>
     </div>

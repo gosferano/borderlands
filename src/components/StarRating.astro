@@ -1,0 +1,28 @@
+---
+interface Props {
+  rating: number; // 0–4
+  max?: number; // default 4
+  size?: number; // optional pixel size
+  color?: string; // optional color (e.g. 'gold')
+}
+
+const { rating, max = 4, size = 16, color = 'gold' } = Astro.props;
+---
+
+<div class="flex items-center gap-1">
+  {
+    Array.from({ length: max }, (_, i) => (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        width={size}
+        height={size}
+        fill={i < rating ? color : 'none'}
+        stroke={color}
+        stroke-width="2"
+      >
+        <path d="M12 2.5l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2.5z" />
+      </svg>
+    ))
+  }
+</div>

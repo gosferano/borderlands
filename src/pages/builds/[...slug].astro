@@ -3,6 +3,8 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import { Image } from 'astro:assets';
 import { getCollection, render } from 'astro:content';
 import type { CollectionEntry } from 'astro:content';
+import StarRating from '../../components/StarRating.astro';
+import UvhIndicator from '../../components/UvhIndicator.astro';
 
 export async function getStaticPaths() {
   const builds = await getCollection('builds');
@@ -120,51 +122,17 @@ const { Content } = await render(build);
 
         <div class="col-span-12 flex items-center gap-1 md:col-span-4">
           <span class="font-semibold">Mobbing:</span>
-          {
-            Array.from({ length: 4 }, (_, i) => (
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill={i < build.data.mobbingRating ? 'gold' : 'none'}
-                stroke="gold"
-                stroke-width="2"
-                class="h-4 w-4"
-              >
-                <path d="M12 2.5l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2.5z" />
-              </svg>
-            ))
-          }
+          <StarRating rating={build.data.mobbingRating} size={16} />
         </div>
 
         <div class="col-span-12 flex items-center gap-1 md:col-span-4">
           <span class="font-semibold">Bossing:</span>
-          {
-            Array.from({ length: 4 }, (_, i) => (
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill={i < build.data.bossingRating ? 'gold' : 'none'}
-                stroke="gold"
-                stroke-width="2"
-                class="h-4 w-4"
-              >
-                <path d="M12 2.5l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2.5z" />
-              </svg>
-            ))
-          }
+          <StarRating rating={build.data.bossingRating} size={16} />
         </div>
 
         <div class="col-span-12 flex items-center gap-1 md:col-span-4">
           <span class="font-semibold">UVH Viability:</span>
-          <div class="flex gap-1">
-            {
-              Array.from({ length: 5 }, (_, i) => (
-                <div
-                  class={`h-4 w-4 rounded-full ${i < build.data.uvhFallof ? 'bg-green-500' : 'bg-gray-400 dark:bg-gray-600'}`}
-                />
-              ))
-            }
-          </div>
+          <UvhIndicator value={build.data.uvhFallof} />
         </div>
 
         <!-- Required DLCs -->

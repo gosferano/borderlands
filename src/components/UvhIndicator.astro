@@ -1,0 +1,20 @@
+---
+interface Props {
+  value: number; // 0–5
+  max?: number; // default 5
+}
+
+const { value, max = 5 } = Astro.props;
+---
+
+<div class="flex gap-1 items-center">
+  {
+    Array.from({ length: max }, (_, i) => (
+      <div
+        class={`h-4 w-4 rounded-full ${
+          i < value ? 'bg-green-500' : 'bg-gray-400 dark:bg-gray-600'
+        }`}
+      ></div>
+    ))
+  }
+</div>
