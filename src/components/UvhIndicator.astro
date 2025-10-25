@@ -7,14 +7,14 @@ interface Props {
 const { value, max = 5 } = Astro.props;
 ---
 
-<div class="flex gap-1 items-center">
+<div class="flex items-center gap-1">
   {
     Array.from({ length: max }, (_, i) => (
       <div
         class={`h-4 w-4 rounded-full ${
           i < value ? 'bg-green-500' : 'bg-gray-400 dark:bg-gray-600'
         }`}
-      ></div>
+      />
     ))
   }
 </div>

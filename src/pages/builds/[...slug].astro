@@ -136,7 +136,7 @@ const { Content } = await render(build);
         </div>
 
         <!-- Required DLCs -->
-        <div class="col-span-12 md:col-span-6 flex w-full min-w-0 flex-col">
+        <div class="col-span-12 flex w-full min-w-0 flex-col md:col-span-6">
           <span class="font-semibold text-gray-700 dark:text-gray-300">Required DLCs:</span>
           <span class="text-gray-800 dark:text-gray-100">
             {build.data.requiredDLCs?.length ? build.data.requiredDLCs.join(', ') : 'none'}
