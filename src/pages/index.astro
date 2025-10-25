@@ -12,7 +12,17 @@ const tagCounts = builds
     return acc;
   }, {});
 
-const counts = Object.values(tagCounts);
+// Define main tags
+const characterTags = ['amon', 'harlowe', 'rafa', 'vex'];
+const progressTags = ['leveling', 'endgame'];
+
+// Filter other tags
+const otherTags = Object.entries(tagCounts).filter(
+  ([tag]) => !characterTags.includes(tag.toLowerCase()) && !progressTags.includes(tag.toLowerCase())
+);
+
+// Scaling for other tags
+const counts = otherTags.map(([_, count]) => count);
 const minCount = counts.length > 0 ? Math.min(...counts) : 0;
 const maxCount = counts.length > 0 ? Math.max(...counts) : 1;
 
@@ -24,8 +34,8 @@ function getFontSize(count: number): string {
   return `${size.toFixed(2)}rem`;
 }
 
-// Sort so big ones appear first (middle)
-const sortedTags = Object.entries(tagCounts).sort((a, b) => b[1] - a[1]);
+// Sort by popularity
+const sortedOtherTags = otherTags.sort((a, b) => b[1] - a[1]);
 ---
 
 <BaseLayout title="Home">
@@ -33,40 +43,60 @@ const sortedTags = Object.entries(tagCounts).sort((a, b) => b[1] - a[1]);
     <h1 class="mb-6 text-center text-4xl font-bold text-gray-900">
       Welcome to Borderlands 4 Builds
     </h1>
+
     <p class="mb-12 text-center text-gray-700 dark:text-gray-300">
       Explore builds by tag, view <a href="/borderlands/builds">all builds</a> or check <a
         href="/borderlands/data">data pages</a
-      >
+      >.
     </p>
 
+    <!-- Characters -->
     <h2 class="mb-6 text-center text-3xl font-bold text-gray-900">Characters</h2>
-
     <p class="mb-6 text-center">
-      <a href="/borderlands/builds/tagged/amon">Amon</a> | <a
-        href="/borderlands/builds/tagged/harlowe">Harlowe</a
-      > | <a href="/borderlands/builds/tagged/rafa">Rafa</a> | <a
-        href="/borderlands/builds/tagged/vex">Vex</a
-      >
+      {
+        characterTags.map((tag, i) => (
+          <>
+            <a
+              href={`/borderlands/builds/tagged/${tag}/`}
+              class="text-blue-600 hover:underline dark:text-blue-400"
+            >
+              {tag} [{tagCounts[tag] ?? 0}]
+            </a>
+            {i < characterTags.length - 1 ? ' | ' : ''}
+          </>
+        ))
+      }
     </p>
 
-    <h2 class="mb-6 text-center text-3xl font-bold text-gray-900">Game progress</h2>
+    <!-- Game Progress -->
+    <h2 class="mb-6 text-center text-3xl font-bold text-gray-900">Game Progress</h2>
     <p class="mb-6 text-center">
-      <a href="/borderlands/builds/tagged/leveling">Leveling</a> | <a
-        href="/borderlands/builds/tagged/endgame">Endgame</a
-      >
+      {
+        progressTags.map((tag, i) => (
+          <>
+            <a
+              href={`/borderlands/builds/tagged/${tag}/`}
+              class="text-blue-600 hover:underline dark:text-blue-400"
+            >
+              {tag} [{tagCounts[tag] ?? 0}]
+            </a>
+            {i < progressTags.length - 1 ? ' | ' : ''}
+          </>
+        ))
+      }
     </p>
 
-    <h2 class="mb-6 text-center text-3xl font-bold text-gray-900">All tags</h2>
-
+    <!-- Other Tags -->
+    <h2 class="mb-6 text-center text-3xl font-bold text-gray-900">Other Tags</h2>
     <div class="tag-cloud relative mx-auto flex max-w-3xl flex-wrap justify-center gap-4">
       {
-        sortedTags.map(([tag, count], index) => (
+        sortedOtherTags.map(([tag, count], index) => (
           <a
             href={`/borderlands/builds/tagged/${encodeURIComponent(tag)}/`}
             class="tag-cloud-item text-blue-600 hover:underline dark:text-blue-400"
             style={`font-size:${getFontSize(count)}; --i:${index}; --count:${count};`}
           >
-            {tag}
+            {tag} [{count}]
           </a>
         ))
       }
@@ -99,14 +129,5 @@ const sortedTags = Object.entries(tagCounts).sort((a, b) => b[1] - a[1]);
   .tag-cloud-item:hover {
     transform: scale(1.25);
     z-index: 10;
-  }
-
-  /* Simulate cloud shape by pushing items outward with rotate+translate */
-  .tag-cloud-item:nth-child(odd) {
-    transform: translateY(calc((var(--i) % 6 - 3) * 2px)) rotate(calc(var(--i) * 10deg));
-  }
-
-  .tag-cloud-item:nth-child(even) {
-    transform: translateY(calc((var(--i) % 6 - 3) * -2px)) rotate(calc(var(--i) * -10deg));
   }
 </style>
