@@ -16,5 +16,5 @@ mobbingRating: 4
 bossingRating: 2
 uvhFallof: 0
 tags: ['rafa', 'instigator', 'peacebreaker cannons', 'endgame', 'leveling']
-# heroImage: '../../assets/amon-storm-bringer.png'
+heroImage: '../../assets/splash.png'
 ---
