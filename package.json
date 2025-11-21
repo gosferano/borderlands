@@ -16,9 +16,11 @@
     "@astrojs/rss": "^4.0.12",
     "@astrojs/sitemap": "^3.6.0",
     "@tailwindcss/vite": "^4.1.14",
+    "@types/js-yaml": "^4.0.9",
     "astro": "^5.14.8",
     "chart.js": "^4.5.1",
     "fuse.js": "^7.1.0",
+    "js-yaml": "^4.1.1",
     "papaparse": "^5.5.3",
     "sharp": "^0.34.3",
     "tailwindcss": "^4.1.14"
