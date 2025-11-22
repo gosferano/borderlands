@@ -45,6 +45,14 @@ import Layout from '../layouts/BaseLayout.astro';
         <section id="editSection" class="hidden">
           <h3 class="text-bl-yellow mb-4 text-xl font-bold">Edit Save Data (YAML)</h3>
 
+          <!-- Quick Modifications -->
+          <div class="mb-4">
+            <label class="mb-2 block text-sm font-semibold">Quick Modifications:</label>
+            <div id="modificationButtons" class="flex flex-wrap gap-2 overflow-x-auto">
+              <!-- Buttons will be generated dynamically -->
+            </div>
+          </div>
+
           <div class="mb-4">
             <textarea
               id="yamlEditor"
@@ -97,7 +105,7 @@ import Layout from '../layouts/BaseLayout.astro';
             <li>Enter your Steam ID or Epic ID (required for encryption/decryption)</li>
             <li>Select a .sav file to decrypt</li>
             <li>Click "Decrypt Save File" to view and edit the YAML content</li>
-            <li>Make your changes in the editor</li>
+            <li>Use Quick Modifications buttons for common edits, or manually edit the YAML</li>
             <li>Click "Encrypt & Download .sav" to save your modified file</li>
           </ol>
         </div>
@@ -124,6 +132,7 @@ import Layout from '../layouts/BaseLayout.astro';
 
 <script>
   import { decryptSave, encryptSave, downloadFile } from '../utils/saveDecryptor';
+  import { modifications, applyModification } from '../utils/yamlModifications';
 
   let currentYaml = '';
   let originalFilename = '';
@@ -139,11 +148,38 @@ import Layout from '../layouts/BaseLayout.astro';
   const downloadYamlBtn = document.getElementById('downloadYamlBtn') as HTMLButtonElement;
   const errorMessage = document.getElementById('errorMessage') as HTMLDivElement;
   const successMessage = document.getElementById('successMessage') as HTMLDivElement;
+  const modificationButtons = document.getElementById('modificationButtons') as HTMLDivElement;
 
   // Load previous user ID if exists
   const savedUserId = localStorage.getItem('bl4_previous_userid');
   if (savedUserId && userIdInput) {
     userIdInput.value = savedUserId;
+  }
+
+  // Create modification buttons dynamically
+  function createModificationButtons() {
+    if (!modificationButtons) return;
+
+    modifications.forEach((mod, index) => {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className =
+        'rounded-md bg-purple-700 px-3 py-2 text-sm text-white hover:bg-purple-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed';
+      button.innerHTML = `${mod.icon} ${mod.name}`;
+      button.title = mod.description;
+
+      button.addEventListener('click', () => {
+        try {
+          const modifiedYaml = applyModification(yamlEditor.value, mod);
+          yamlEditor.value = modifiedYaml;
+          showSuccess(`✓ ${mod.name} applied successfully!`);
+        } catch (error) {
+          showError(`Failed to apply ${mod.name}: ${(error as Error).message}`);
+        }
+      });
+
+      modificationButtons.appendChild(button);
+    });
   }
 
   // Enable decrypt button when file is selected
@@ -186,9 +222,17 @@ import Layout from '../layouts/BaseLayout.astro';
       // Display YAML in editor
       yamlEditor.value = currentYaml;
       editSection.classList.remove('hidden');
+
+      // Create modification buttons if not already created
+      if (modificationButtons && modificationButtons.children.length === 0) {
+        createModificationButtons();
+      }
+
       editSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 
-      showSuccess('Save file decrypted successfully! Edit the YAML below.');
+      showSuccess(
+        'Save file decrypted successfully! Edit the YAML below or use Quick Modifications.'
+      );
     } catch (error) {
       showError(`Failed to decrypt: ${(error as Error).message}`);
     } finally {
